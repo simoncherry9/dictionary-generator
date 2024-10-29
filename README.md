@@ -1,5 +1,7 @@
 # Generador de Diccionario de Contraseñas
 
+![Captura de pantalla 2024-10-29 120501](https://github.com/user-attachments/assets/13766f2b-ece2-40aa-a6ce-bf96c5f7d4cb)
+
 ## Descripción
 
 Este script de Python permite generar un diccionario de contraseñas personalizadas basadas en datos ingresados por el usuario. Facilita la creación de combinaciones de contraseñas a partir de nombres, apellidos, DNI, fechas de nacimiento, direcciones, y otras palabras clave. 
