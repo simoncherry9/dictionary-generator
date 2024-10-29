@@ -28,11 +28,13 @@ Este script de Python permite generar un diccionario de contraseñas personaliza
 1. Clona el repositorio:
    ```bash
    git clone https://github.com/tu_usuario/nombre_repositorio.git
-   cd nombre_repositorio
-2. Ejecuta el script:
+2. Dirigete a la ruta del repositorio:
+   ```bash
+   cd dictionary-generator
+3. Ejecuta el script:
    ```bash
    python diccionario-generator.py
-3. Sigue las instrucciones
+4. Sigue las instrucciones
 
 ## 🤝 Contribuciones
 ¡Las contribuciones son bienvenidas! Si deseas mejorar este proyecto, haz un fork y envía un pull request. Asegúrate de incluir pruebas para cualquier cambio importante.
