@@ -1,4 +1,4 @@
-# Generador de Diccionario de Contraseñas
+## Generador de Diccionario de Contraseñas
 
 ![Captura de pantalla 2024-10-29 120501](https://github.com/user-attachments/assets/13766f2b-ece2-40aa-a6ce-bf96c5f7d4cb)
 
@@ -6,7 +6,7 @@ Este script de Python permite generar un diccionario de contraseñas personaliza
 
 ---
 
-### 📋 Características
+## 📋 Características
 
 - **Entrada Personalizada:** Permite al usuario ingresar diferentes datos, y funciona incluso si se omiten algunos campos.
 - **Generación de Variaciones:** Crea combinaciones de contraseñas con mayúsculas, minúsculas, números aleatorios y caracteres especiales.
@@ -16,14 +16,14 @@ Este script de Python permite generar un diccionario de contraseñas personaliza
 
 ---
 
-### ⚙️ Requisitos
+## ⚙️ Requisitos
 
 - Python 3.x
 - Módulos: `random`, `itertools`
 
 ---
 
-### 🛠️ Cómo Usar
+## 🛠️ Cómo Usar
 
 1. Clona el repositorio:
    ```bash
