@@ -36,6 +36,8 @@ Este script de Python permite generar un diccionario de contraseñas personaliza
    python diccionario-generator.py
 4. Sigue las instrucciones
 
+---
+
 ## 🤝 Contribuciones
 ¡Las contribuciones son bienvenidas! Si deseas mejorar este proyecto, haz un fork y envía un pull request. Asegúrate de incluir pruebas para cualquier cambio importante.
 
