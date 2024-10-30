@@ -14,6 +14,11 @@ Este script de Python permite generar un diccionario de contraseñas personaliza
 - **Salida en Archivo:** Guarda todas las contraseñas generadas en un archivo de texto, fácil de acceder y utilizar.
 - **Limpieza de Terminal:** Limpia la terminal al inicio del script para mejorar la legibilidad de la salida.
 
+# 📥 Update
+
+- **Verificación de actualizaciónes y dependencias** Se agregó la opción para verificar si existen actualizaciones del script y las dependencias necesarias instaladas.
+- **Buscar en diccionario** Se agregó la opción de poder buscar palabras claves dentro del diccionario generado.
+
 ---
 
 ## ⚙️ Requisitos
