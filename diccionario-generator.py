@@ -2,6 +2,7 @@ import os
 import random
 import time
 import itertools
+import subprocess
 from itertools import permutations
 from colorama import Fore, Style, init
 
@@ -37,20 +38,22 @@ def mostrar_banner():
 
 def solicitar_datos():
     datos = {}
-    datos["nombre"] = input("Ingresa un nombre (deja en blanco si no aplica) -> ")
-    datos["apellido"] = input("Ingresa un apellido (deja en blanco si no aplica)-> ")
-    datos["dni"] = input("Ingresa un DNI (deja en blanco si no aplica)-> ")
-    datos["fecha_nacimiento"] = input("Ingresa una fecha de nacimiento (formato YYYYMMDD, deja en blanco si no aplica)-> ")
-    datos["direccion"] = input("Ingresa una dirección (deja en blanco si no aplica)-> ")
-    datos["otra_palabra"] = input("Ingresa alguna palabra clave adicional (deja en blanco si no aplica)-> ")
-    datos["nombre_mascota"] = input("Ingresa un nombre de una mascota (deja en blanco si no aplica)-> ")
-    datos["color_favorito"] = input("Ingresa un color favorito (deja en blanco si no aplica)-> ")
-    datos["lugar_nacimiento"] = input("Ingresa un lugar de nacimiento (deja en blanco si no aplica)-> ")
+    print(Fore.CYAN + "\nPor favor, proporciona los siguientes datos (deja en blanco si no aplica):\n")
+    
+    datos["nombre"] = input("1. Ingresa un nombre -> ")
+    datos["apellido"] = input("2. Ingresa un apellido -> ")
+    datos["dni"] = input("3. Ingresa un DNI -> ")
+    datos["fecha_nacimiento"] = input("4. Ingresa una fecha de nacimiento (formato YYYYMMDD) -> ")
+    datos["direccion"] = input("5. Ingresa una dirección -> ")
+    datos["otra_palabra"] = input("6. Ingresa alguna palabra clave adicional -> ")
+    datos["nombre_mascota"] = input("7. Ingresa un nombre de una mascota -> ")
+    datos["color_favorito"] = input("8. Ingresa un color favorito -> ")
+    datos["lugar_nacimiento"] = input("9. Ingresa un lugar de nacimiento -> ")
 
     datos = {k: v for k, v in datos.items() if v}
     return datos
 
-def generar_variaciones(datos):
+def generar_variaciones(datos, incluir_numeros=True, incluir_especiales=False):
     palabras = list(datos.values())
     variaciones = set()
     caracteres_especiales = ["!", "@", "#", "$", "%", "&", "*"]
@@ -60,9 +63,10 @@ def generar_variaciones(datos):
         variaciones.add(palabra.lower())
         variaciones.add(palabra.upper())
         variaciones.add(palabra.capitalize())
-        # Variaciones con números
-        for num in ["123", "2024"]:
-            variaciones.add(palabra + num)
+
+        if incluir_numeros:
+            for num in ["123", "2024"]:
+                variaciones.add(palabra + num)
 
     for r in range(2, len(palabras) + 1):
         for comb in permutations(palabras, r):
@@ -70,19 +74,21 @@ def generar_variaciones(datos):
             combinacion_capitalizada = "".join([word.capitalize() for word in comb])
             variaciones.update({combinacion, combinacion_capitalizada})
 
-            for num in ["123", "2024"]:
-                variaciones.update({
-                    combinacion + num,
-                    combinacion_capitalizada + num
-                })
+            if incluir_numeros:
+                for num in ["123", "2024"]:
+                    variaciones.update({
+                        combinacion + num,
+                        combinacion_capitalizada + num
+                    })
 
-    for palabra in palabras:
-        for num in ["123", "2024"]:
+    if incluir_especiales:
+        for palabra in palabras:
             for char in caracteres_especiales:
-                variaciones.update({
-                    palabra + num + char,
-                    palabra.capitalize() + num + char
-                })
+                variaciones.add(palabra + char)
+                if incluir_numeros:
+                    for num in ["123", "2024"]:
+                        variaciones.add(palabra + num + char)
+                        variaciones.add(palabra.capitalize() + num + char)
 
     return variaciones
 
@@ -100,13 +106,88 @@ def guardar_diccionario(variaciones, archivo="diccionario.txt"):
             f.write(variacion + "\n")
     print(f"\n{Fore.GREEN}\n✓ Diccionario generado con éxito en '{archivo}' con {len(variaciones)} contraseñas.")
 
-def main():
-    limpiar_terminal()  
-    mostrar_banner()
-    print(Fore.CYAN + "->->->->-> Bienvenido al generador de diccionarios de contraseñas <-<-<-<-<-\n\n")
-    datos = solicitar_datos()
-    variaciones = generar_variaciones(datos)
-    guardar_diccionario(variaciones)
+def elegir_archivo_salida():
+    while True:
+        archivo = input("\nIngresa el nombre del archivo de salida (debe terminar en .txt): ")
+        if archivo.endswith(".txt"):
+            return archivo
+        else:
+            print(Fore.RED + "\nError: El nombre del archivo debe terminar en .txt. Intenta de nuevo.")
+
+def buscar_palabra_en_diccionario(archivo):
+    palabra = input(Fore.YELLOW + "\nIngresa la palabra a buscar en el diccionario: ")
+    try:
+        resultados = subprocess.check_output(['grep', palabra, archivo]).decode('utf-8')
+        if resultados:
+            print(Fore.GREEN + f"\nResultados de la búsqueda para '{palabra}':\n")
+            print(resultados)
+        else:
+            print(Fore.RED + f"\nNo se encontraron resultados para '{palabra}'.")
+    except subprocess.CalledProcessError:
+        print(Fore.RED + f"\nNo se encontraron resultados para '{palabra}'.")
+
+def verificar_dependencias():
+    print(Fore.YELLOW + "\nVerificando dependencias...")
+    try:
+        import colorama
+        print(Fore.GREEN + "\n✓ Todas las dependencias están instaladas.")
+    except ImportError as e:
+        print(Fore.RED + f"Error: {e}. Instala la dependencia necesaria.")
+
+def verificar_actualizaciones():
+    print(Fore.YELLOW + "\nVerificando actualizaciones desde el repositorio...")
+    resultado = subprocess.run(["git", "pull", "https://github.com/simoncherry9/dictionary-generator.git"], capture_output=True, text=True)
+    
+    if "Already up to date." in resultado.stdout:
+        print(Fore.GREEN + "\n✓ El repositorio ya está actualizado.")
+    else:
+        print(Fore.GREEN + "\n✓ Repositorio actualizado con éxito.")
+
+def mostrar_menu():
+    while True:
+        print(Fore.GREEN + "\n******* Generador de contraseñas *******")
+        print(Fore.CYAN + "\n\n\nSeleccione una opción:")
+        print("\n1. Verificar dependencias")
+        print("2. Verificar actualizaciones desde el repositorio")
+        print("3. Crear diccionario")
+        print("4. Buscar palabra en el diccionario")
+        print("5. Salir")
+        
+        opcion = input("\nOpción: ")
+
+        if opcion == "1":
+            verificar_dependencias()
+            input(Fore.YELLOW + "\nPresiona Enter para continuar...")
+            limpiar_terminal()
+            mostrar_banner()
+        elif opcion == "2":
+            verificar_actualizaciones()
+            input(Fore.YELLOW + "\nPresiona Enter para continuar...")
+            limpiar_terminal()
+            mostrar_banner()
+        elif opcion == "3":
+            datos = solicitar_datos()
+            incluir_numeros = input("¿Incluir números? (s/n): ").lower() == "s"
+            incluir_especiales = input("¿Incluir caracteres especiales? (s/n): ").lower() == "s"
+            variaciones = generar_variaciones(datos, incluir_numeros, incluir_especiales)
+            archivo = elegir_archivo_salida()
+            guardar_diccionario(variaciones, archivo)
+            input(Fore.YELLOW + "\nPresiona Enter para continuar...")
+            limpiar_terminal()
+            mostrar_banner()
+        elif opcion == "4":
+            archivo = input(Fore.YELLOW + "Ingresa el nombre del archivo de diccionario para buscar (debe terminar en .txt): ")
+            buscar_palabra_en_diccionario(archivo)
+            input(Fore.YELLOW + "\nPresiona Enter para continuar...")
+            limpiar_terminal()
+            mostrar_banner()
+        elif opcion == "5":
+            print(Fore.YELLOW + "\nSaliendo del programa...")
+            break
+        else:
+            print(Fore.RED + "\nOpción no válida. Intenta de nuevo.")
 
 if __name__ == "__main__":
-    main()
+    limpiar_terminal()
+    mostrar_banner()
+    mostrar_menu()
