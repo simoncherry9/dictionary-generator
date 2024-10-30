@@ -60,34 +60,30 @@ def generar_variaciones(datos):
         variaciones.add(palabra.lower())
         variaciones.add(palabra.upper())
         variaciones.add(palabra.capitalize())
+        # Variaciones con números
+        for num in ["123", "2024"]:
+            variaciones.add(palabra + num)
 
     for r in range(2, len(palabras) + 1):
         for comb in permutations(palabras, r):
             combinacion = "".join(comb)
-            variaciones.add(combinacion)
-            variaciones.add("-".join(comb))
-            variaciones.add("".join([word.capitalize() for word in comb]))
-            for char in caracteres_especiales:
-                for _ in range(3):
-                    random_number = str(random.randint(10, 999))
-                    variaciones.add(combinacion + char + random_number)
-                    variaciones.add("-".join(comb) + char + random_number)
-                    variaciones.add("".join([word.capitalize() for word in comb]) + char + random_number)
-    
-    for char in caracteres_especiales:
-        variaciones.update({
-            datos.get("nombre", "") + "123" + char,
-            datos.get("nombre", "") + "2024" + char,
-            datos.get("apellido", "") + "123" + char,
-            datos.get("apellido", "") + "2024" + char,
-        })
-        for _ in range(3):
-            random_number = str(random.randint(10, 999))
-            variaciones.add(datos.get("nombre", "") + random_number + char)
-            variaciones.add(datos.get("apellido", "") + random_number + char)
+            combinacion_capitalizada = "".join([word.capitalize() for word in comb])
+            variaciones.update({combinacion, combinacion_capitalizada})
 
-    variaciones = {v for v in variaciones if v}
-    
+            for num in ["123", "2024"]:
+                variaciones.update({
+                    combinacion + num,
+                    combinacion_capitalizada + num
+                })
+
+    for palabra in palabras:
+        for num in ["123", "2024"]:
+            for char in caracteres_especiales:
+                variaciones.update({
+                    palabra + num + char,
+                    palabra.capitalize() + num + char
+                })
+
     return variaciones
 
 def animacion_carga():
