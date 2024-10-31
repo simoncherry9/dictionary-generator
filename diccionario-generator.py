@@ -132,7 +132,7 @@ def verificar_dependencias():
         import colorama
         print(Fore.GREEN + "\n✓ Todas las dependencias están instaladas.")
     except ImportError as e:
-        print(Fore.RED + f"Error: {e}. Instala la dependencia necesaria.")
+        print(Fore.RED + f"Error: {e}. Instala las dependencias necesaria.")
 
 def verificar_actualizaciones():
     print(Fore.YELLOW + "\nVerificando actualizaciones desde el repositorio...")
