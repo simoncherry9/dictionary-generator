@@ -25,6 +25,7 @@ Este script de Python permite generar un diccionario de contraseñas personaliza
 
 - Python 3.x
 - Módulos: `random`, `itertools`
+- También puedes utilizar la versión web de la herramienta en el siguiente link: https://simoncherry9.github.io/dictionary-generator-web/
 
 ---
 
