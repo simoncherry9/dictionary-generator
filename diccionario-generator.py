@@ -42,6 +42,7 @@ def solicitar_datos():
     
     datos["nombre"] = input("1. Ingresa un nombre -> ")
     datos["apellido"] = input("2. Ingresa un apellido -> ")
+    datos["apodo"] = input("2. Ingresa un apodo -> ")
     datos["dni"] = input("3. Ingresa un DNI -> ")
     datos["fecha_nacimiento"] = input("4. Ingresa una fecha de nacimiento (formato YYYYMMDD) -> ")
     datos["direccion"] = input("5. Ingresa una dirección -> ")
@@ -116,8 +117,19 @@ def elegir_archivo_salida():
 
 def buscar_palabra_en_diccionario(archivo):
     palabra = input(Fore.YELLOW + "\nIngresa la palabra a buscar en el diccionario: ")
+    
+    tipo_busqueda = input(Fore.YELLOW + "\n¿Deseas buscar una coincidencia exacta (e) o palabras que incluyan el texto (i)? (e/i): ").strip().lower()
+    
+    if tipo_busqueda == 'e':
+        patron_busqueda = f'^{palabra}$'  
+    elif tipo_busqueda == 'i':
+        patron_busqueda = palabra 
+    else:
+        print(Fore.RED + "\nOpción no válida. Se utilizará la búsqueda por defecto (inclusión).")
+        patron_busqueda = palabra
+    
     try:
-        resultados = subprocess.check_output(['grep', palabra, archivo]).decode('utf-8')
+        resultados = subprocess.check_output(['grep', '-E', patron_busqueda, archivo]).decode('utf-8')
         if resultados:
             print(Fore.GREEN + f"\nResultados de la búsqueda para '{palabra}':\n")
             print(resultados)
@@ -125,6 +137,7 @@ def buscar_palabra_en_diccionario(archivo):
             print(Fore.RED + f"\nNo se encontraron resultados para '{palabra}'.")
     except subprocess.CalledProcessError:
         print(Fore.RED + f"\nNo se encontraron resultados para '{palabra}'.")
+
 
 def verificar_dependencias():
     print(Fore.YELLOW + "\nVerificando dependencias...")
@@ -176,7 +189,7 @@ def mostrar_menu():
             limpiar_terminal()
             mostrar_banner()
         elif opcion == "4":
-            archivo = input(Fore.YELLOW + "Ingresa el nombre del archivo de diccionario para buscar (debe terminar en .txt): ")
+            archivo = input(Fore.YELLOW + "\nIngresa el nombre del archivo de diccionario para buscar (debe terminar en .txt): ")
             buscar_palabra_en_diccionario(archivo)
             input(Fore.YELLOW + "\nPresiona Enter para continuar...")
             limpiar_terminal()
